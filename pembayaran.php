@@ -14,12 +14,12 @@
         <td>History</td>
     </tr>
     <?php
-    include'../koneksi.php';
+    include'koneksi.php';
     $no = 1;
     $sql = "SELECT*FROM siswa,spp,kelas WHERE siswa.id_kelas=kelas.id_kelas AND siswa.id_spp=spp.id_spp ORDER By nama ASC";
     $query =mysqli_query($koneksi, $sql);
-    foreach($query as $data){ 
-        $data_pembayaran = mysqli_query($koneksi,"SELECT SUM(jumlah_bayar) as jumlah_bayar FROM pembayaran WHERE nisn='$data[nisn]'");
+    foreach($query as $data){ ?>
+        $data_pembayaran = mysqli_query($koneksi,"SELECT sum(jumlah_bayar as jumlah_bayar FROM pembayaran WHERE nisn='$data['nisn']'");
        $data_pembayaran = mysqli_fetch_array($data_pembayaran);
        $sudah_bayar = $data_pembayaran['jumlah_bayar'];
        $kekurangan = $data['nominal']-$data_pembayaran['jumlah_bayar'];
@@ -36,14 +36,14 @@
            <td>
               <?php 
               if($kekurangan==0){
-                 echo"<span class='badge text-bg-success'> Sudah Lunas </span>";
+                 echo"<span class='badge text-bg-success'> Sudah Lunas </span>
               }else{ ?>
-                   <a href="?url=tambah-pembayaran&nisn=<?= $data['nisn'] ?>&kekurangan=<?= $kekurangan ?>" class="btn btn-danger"> Pilih & Bayar </a>
+                   <a href="?url=tambah-p3mbayaran&nisn<?= $data['nisn'] ?>"&kekurangan=<?= $kekurangan ?>" class="btn btn-danger"> Pilih & Bayar </a>
               <?php } ?>
-
             </td>
             <td>
-              <a href="?url=history-pembayaran&nisn=<?= $data['nisn'] ?>" class='btn btn-info'>History</a>
+              <a href="?
+              url=history-pembayaran&nisn=<? $data['nisn'] ?>" class='btn btn-info'>History</a>
             </td>
         </tr>
     <?php } ?>

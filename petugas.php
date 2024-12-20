@@ -1,36 +1,51 @@
-<h5>Halaman Data Petugas.</h5>
-<a href="?url=tambah-petugas" class="btn btn-primary"> Tambah Petugas </a>
-<hr>
-<table class="table table-striped table-bordered">
-    <tr class="fw-bold">
-        <td>No</td>
-        <td>Username</td>
-        <td>Password</td>
-        <td>Nama Petugas</td>
-        <td>Level</td>
-        <td>Edit</td>
-        <td>Hapus</td>
-    </tr>
-    <?php
-    include'../koneksi.php';
-    $no = 1;
-    $sql = "SELECT*FROM petugas ORDER BY id_petugas DESC";
-    $query = mysqli_query($koneksi, $sql);
-    foreach($query as $data){ ?>
-        <tr>
-            <td><?= $no++; ?></td>
-            <td><?= $data['username'] ?></td>
-            <td><?= $data['password'] ?></td>
-            <td><?= $data['nama_petugas'] ?></td>
-            <td><?= $data['level'] ?></td>
-            <td>
-                <a href="?url=edit-petugas&id_petugas=<?= $data['id_petugas'] ?>" classbtn btn-warning>EDIT</a>
-            </td>
-            <td>
-                <a onlick="return confirm('Apakah Anda Yakin Ingin Menghapus Data')"
-                  href="?url=hapus-petugas&id_petugas=<?= $data['id_petugas'] ?>" class='btn btn-denger'>HAPUS</a>
-            </td>
-        </tr>
-    <?php } ?>
+<?php
+session_start();
+if(empty($_SESSION['id_petugas'])){
+    echo"<script>
+    alert('Maaf Anda Belum Login');
+    window.location.assign('../index2.php');
+    </script>";
+}
+if($_SESSION['level']!='petugas'){
+    echo"<script>
+    alert('Maaf Anda Bukan Sesi Admin');
+    window.location.assign('../index2.php');
+    </script>";
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Petugas - Aplikasi Pembayaran SPP.</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+  
+   <h3>Aplikasi Pembayaran SPP.</h3>
+   <div class="alert alert-info">
+      Anda Login Sebagai Petugas <b><?= $_SESSION['nama_petugas'] ?></b> Aplikasi Pembayaran SPP.
+</div>
+   <a href="petugas.php" class="btn btn-primary"> Petugas</a>
+   <a href="petugas.php?url=Pembayaran" class="btn btn-primary"> pembayaran</a>
+   <a href="petugas.php?url=logout" class="btn btn-primary"> Logout</a>
 
-</table>
+   <div class="card mt-2">
+       <div class="card-body">
+           <!-- ini isi web kita -->
+           <?php
+           $file = @$_GET['url'];
+           if(empty($file)){
+               echo"<h4>Selamat Datang Di Halaman Petugas.</h4>";
+               echo"Aplikasi Pembayaran SPP digunakan untuk mempermudah dalam mencatat pembayaran siswa / siswi disekolah.";
+           }else{
+               include $file. '.php';
+           }
+           ?>
+       </div>
+   </div>
+<script src="../js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
